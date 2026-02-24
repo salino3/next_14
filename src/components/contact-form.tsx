@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import RichEditor from "./rich-editor/rich-editor";
+// import Image from "next/image";
 
 // 1. Schema definition (moved outside to prevent re-renders)
 const formSchema = z.object({
@@ -69,6 +70,7 @@ export default function ContactForm() {
         <h2 className="text-xl font-bold">User Registration</h2>
         <p className="text-sm text-muted-foreground">
           Submit your details to our database.
+          {/* <Image /> */}
         </p>
       </div>
 
@@ -92,17 +94,19 @@ export default function ContactForm() {
                 <FormItem>
                   <FormLabel>Username</FormLabel>
                   <FormControl>
-                    <RichEditor
-                      content={field.value}
-                      onChange={field.onChange}
-                    />
-                    <Input
-                      type="text"
-                      placeholder="mario_dev"
-                      autoFocus
-                      autoComplete="off"
-                      {...field}
-                    />
+                    <>
+                      {/* <RichEditor
+                        content={field.value}
+                        onChange={field.onChange}
+                      /> */}
+                      <Input
+                        type="text"
+                        placeholder="mario_dev"
+                        autoFocus
+                        autoComplete="off"
+                        {...field}
+                      />
+                    </>
                   </FormControl>
                   <div className="h-4">
                     <FormMessage className="text-xs" />
@@ -118,15 +122,17 @@ export default function ContactForm() {
                 <FormItem>
                   <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <RichEditor
-                      content={field.value}
-                      onChange={field.onChange}
-                    />
-                    <Input
-                      type="email"
-                      placeholder="mario@example.com"
-                      {...field}
-                    />
+                    <>
+                      {/* <RichEditor
+                        content={field.value}
+                        onChange={field.onChange}
+                      /> */}
+                      <Input
+                        type="email"
+                        placeholder="mario@example.com"
+                        {...field}
+                      />
+                    </>
                   </FormControl>
                   <div className="h-4">
                     <FormMessage className="text-xs" />

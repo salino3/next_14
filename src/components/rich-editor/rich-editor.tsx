@@ -1,20 +1,23 @@
 "use client";
 
+import * as React from "react"; // Added this
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import { Bold, Italic, List, ListOrdered } from "lucide-react";
+import { Bold, Italic, List } from "lucide-react";
 import { Button } from "../ui/button";
 
-export default function RichEditor({
-  content,
-  onChange,
-}: {
-  content: string;
-  onChange: (html: string) => void;
-}) {
+// Wrap the whole component in React.forwardRef
+const RichEditor = React.forwardRef<
+  HTMLDivElement,
+  {
+    content: string;
+    onChange: (html: string) => void;
+  }
+>(({ content, onChange }, ref) => {
   const editor = useEditor({
     extensions: [StarterKit],
     content: content,
+    immediatelyRender: false,
     editorProps: {
       attributes: {
         class:
@@ -29,8 +32,8 @@ export default function RichEditor({
   if (!editor) return null;
 
   return (
-    <div className="space-y-2">
-      {/* Toolbar */}
+    // We attach the 'ref' here so Shadcn is happy
+    <div className="space-y-2" ref={ref}>
       <div className="flex p-1 border rounded-md bg-slate-50 gap-1">
         <Button
           type="button"
@@ -58,8 +61,11 @@ export default function RichEditor({
         </Button>
       </div>
 
-      {/* Actual Editor Area */}
       <EditorContent editor={editor} />
     </div>
   );
-}
+});
+
+RichEditor.displayName = "RichEditor";
+
+export default RichEditor;
