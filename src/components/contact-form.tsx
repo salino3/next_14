@@ -1,5 +1,5 @@
 "use client";
-
+import { motion } from "framer-motion";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -17,6 +17,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import RichEditor from "./rich-editor/rich-editor";
+// import Image from "next/image";
 
 // 1. Schema definition (moved outside to prevent re-renders)
 const formSchema = z.object({
@@ -68,83 +70,108 @@ export default function ContactForm() {
         <h2 className="text-xl font-bold">User Registration</h2>
         <p className="text-sm text-muted-foreground">
           Submit your details to our database.
+          {/* <Image /> */}
         </p>
       </div>
 
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-          <FormField
-            control={form.control}
-            name="username"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Username</FormLabel>
-                <FormControl>
-                  <Input
-                    type="text"
-                    placeholder="mario_dev"
-                    autoFocus
-                    autoComplete="off"
-                    {...field}
-                  />
-                </FormControl>
-                <div className="h-4">
-                  <FormMessage className="text-xs" />
-                </div>
-              </FormItem>
+      <motion.div
+        initial={{ opacity: 0, y: 40 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{
+          duration: 0.8,
+          ease: "easeOut",
+          type: "spring",
+          stiffness: 100,
+        }}
+        className="max-w-md mx-auto p-8"
+      >
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <FormField
+              control={form.control}
+              name="username"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Username</FormLabel>
+                  <FormControl>
+                    <>
+                      {/* <RichEditor
+                        content={field.value}
+                        onChange={field.onChange}
+                      /> */}
+                      <Input
+                        type="text"
+                        placeholder="mario_dev"
+                        autoFocus
+                        autoComplete="off"
+                        {...field}
+                      />
+                    </>
+                  </FormControl>
+                  <div className="h-4">
+                    <FormMessage className="text-xs" />
+                  </div>
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Email</FormLabel>
+                  <FormControl>
+                    <>
+                      {/* <RichEditor
+                        content={field.value}
+                        onChange={field.onChange}
+                      /> */}
+                      <Input
+                        type="email"
+                        placeholder="mario@example.com"
+                        {...field}
+                      />
+                    </>
+                  </FormControl>
+                  <div className="h-4">
+                    <FormMessage className="text-xs" />
+                  </div>
+                </FormItem>
+              )}
+            />
+
+            <Button
+              type="submit"
+              className="w-full"
+              disabled={mutation.isPending}
+            >
+              {mutation.isPending ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Processing...
+                </>
+              ) : (
+                "Submit details"
+              )}
+            </Button>
+
+            {/* Success/Error Feedback */}
+            {mutation.isSuccess && (
+              <div className="flex items-center gap-2 text-green-600 text-sm mt-2 justify-center">
+                <CheckCircle2 className="h-4 w-4" />
+                <span>Data saved successfully!</span>
+              </div>
             )}
-          />
 
-          <FormField
-            control={form.control}
-            name="email"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Email</FormLabel>
-                <FormControl>
-                  <Input
-                    type="email"
-                    placeholder="mario@example.com"
-                    {...field}
-                  />
-                </FormControl>
-                <div className="h-4">
-                  <FormMessage className="text-xs" />
-                </div>
-              </FormItem>
+            {mutation.isError && (
+              <div className="text-destructive text-sm mt-2 text-center">
+                Error: {mutation.error.message}
+              </div>
             )}
-          />
-
-          <Button
-            type="submit"
-            className="w-full"
-            disabled={mutation.isPending}
-          >
-            {mutation.isPending ? (
-              <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Processing...
-              </>
-            ) : (
-              "Submit details"
-            )}
-          </Button>
-
-          {/* Success/Error Feedback */}
-          {mutation.isSuccess && (
-            <div className="flex items-center gap-2 text-green-600 text-sm mt-2 justify-center">
-              <CheckCircle2 className="h-4 w-4" />
-              <span>Data saved successfully!</span>
-            </div>
-          )}
-
-          {mutation.isError && (
-            <div className="text-destructive text-sm mt-2 text-center">
-              Error: {mutation.error.message}
-            </div>
-          )}
-        </form>
-      </Form>
+          </form>
+        </Form>
+      </motion.div>
     </div>
   );
 }
