@@ -1,4 +1,4 @@
-"use client"; // ¡Importante! Los formularios necesitan interactividad
+"use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -16,41 +16,52 @@ import {
 import { Input } from "@/components/ui/input";
 
 export default function ContactForm() {
-  // 1. Definir el formulario
+  const formSchema = z.object({
+    username: z.string().min(2, {
+      message: "Username must be at least 2 characters.",
+    }),
+    email: z.string().email({
+      message: "Please enter a valid email address.",
+    }),
+  });
+
+  // 1. Define your form
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
+    // mode: "onChange", // This enables real-time validation as the user types
     defaultValues: {
       username: "",
       email: "",
     },
   });
 
-  // 2. Definir qué pasa al enviar (submit)
+  // 2. Define a submit handler
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log("Datos enviados:", values);
-    alert("Formulario enviado con éxito");
+    // This will be type-safe and validated
+    console.log("Form values:", values);
   }
 
   return (
     <div className="max-w-md mx-auto p-6 bg-slate-50 rounded-lg shadow-sm">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-          {/* Campo: Username */}
+          {/* Field: Username */}
           <FormField
             control={form.control}
             name="username"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Nombre de usuario</FormLabel>
+                <FormLabel>Username</FormLabel>
                 <FormControl>
-                  <Input placeholder="flavio123" {...field} />
+                  <Input placeholder="Mario 123" {...field} />
                 </FormControl>
-                <FormMessage /> {/* Aquí aparecen los errores de Zod */}
+                <FormMessage />
+                {/* Zod errors */}
               </FormItem>
             )}
           />
 
-          {/* Campo: Email */}
+          {/* Field: Email */}
           <FormField
             control={form.control}
             name="email"
@@ -58,7 +69,11 @@ export default function ContactForm() {
               <FormItem>
                 <FormLabel>Email</FormLabel>
                 <FormControl>
-                  <Input placeholder="tu@email.com" {...field} />
+                  <Input
+                    placeholder="tu@email.com"
+                    autoComplete="off"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
