@@ -55,7 +55,9 @@ export default function ContactForm() {
                 <FormControl>
                   <Input placeholder="Mario 123" {...field} />
                 </FormControl>
-                <FormMessage />
+                <div className="h-3">
+                  <FormMessage className="text-xs" />
+                </div>
                 {/* Zod errors */}
               </FormItem>
             )}
@@ -75,7 +77,9 @@ export default function ContactForm() {
                     {...field}
                   />
                 </FormControl>
-                <FormMessage />
+                <div className="h-3">
+                  <FormMessage className="text-xs" />
+                </div>
               </FormItem>
             )}
           />
