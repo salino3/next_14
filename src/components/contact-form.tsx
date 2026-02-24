@@ -17,6 +17,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import RichEditor from "./rich-editor/rich-editor";
 
 // 1. Schema definition (moved outside to prevent re-renders)
 const formSchema = z.object({
@@ -72,10 +73,15 @@ export default function ContactForm() {
       </div>
 
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 1 }}
-        transition={{ duration: 0.5 }}
-        className="max-w-md mx-auto p-8..."
+        initial={{ opacity: 0, y: 40 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{
+          duration: 0.8,
+          ease: "easeOut",
+          type: "spring",
+          stiffness: 100,
+        }}
+        className="max-w-md mx-auto p-8"
       >
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -86,6 +92,10 @@ export default function ContactForm() {
                 <FormItem>
                   <FormLabel>Username</FormLabel>
                   <FormControl>
+                    <RichEditor
+                      content={field.value}
+                      onChange={field.onChange}
+                    />
                     <Input
                       type="text"
                       placeholder="mario_dev"
@@ -108,6 +118,10 @@ export default function ContactForm() {
                 <FormItem>
                   <FormLabel>Email</FormLabel>
                   <FormControl>
+                    <RichEditor
+                      content={field.value}
+                      onChange={field.onChange}
+                    />
                     <Input
                       type="email"
                       placeholder="mario@example.com"
